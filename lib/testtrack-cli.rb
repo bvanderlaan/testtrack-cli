@@ -12,15 +12,12 @@ module TestTrack
 		def initialize(*args)
 			super
 			@settings = Hash.new
+			@settings = YAML::load_file(TESTTRACK_SETTINGS_FILE) if File.exists?(TESTTRACK_SETTINGS_FILE)
 		end
 
 	protected
 		def auth()
-			begin
-				auth_from_file 
-			rescue ArgumentError
-				auth_from_prompt
-			end
+			auth_from_prompt unless !options[:force_login] and @settings.has_key?(:username) and @settings.has_key?(:password)
 		end
 
 		def auth_from_prompt()
@@ -29,32 +26,15 @@ module TestTrack
 			puts "\n\n"
 		end
 
-		def auth_from_file()
-			@settings = YAML::load_file(TESTTRACK_SETTINGS_FILE) if !options[:force_login] && File.exists?(TESTTRACK_SETTINGS_FILE)
-			raise ArgumentError unless @settings.has_key?(:username) and @settings.has_key?(:password)
-		end	
-
 		def get_server_uri
-			begin
-				uri = get_server_uri_from_file 
-			rescue ArgumentError
-				uri = get_server_uri_from_prompt
-			end
-
-			return uri
+			get_server_uri_from_prompt unless !options[:force_connection] and @settings.has_key?(:servername) and @settings.has_key?(:serverport)
+			return "#{@settings[:servername]}:#{@settings[:serverport]}"
 		end
 
 		def get_server_uri_from_prompt
 			@settings[:servername] = ask("[Con] Server Name or IP: ")
 			@settings[:serverport] = ask("[Con] Server Port: ")
 			puts "\n\n"
-			return "#{@settings[:servername]}:#{@settings[:serverport]}"
-		end
-
-		def get_server_uri_from_file
-			@settings = YAML::load_file(TESTTRACK_SETTINGS_FILE) if !options[:force_connection] && File.exists?(TESTTRACK_SETTINGS_FILE)
-			raise ArgumentError unless @settings.has_key?(:servername) and @settings.has_key?(:serverport)
-			return "#{@settings[:servername]}:#{@settings[:serverport]}"
 		end
 
 	end
