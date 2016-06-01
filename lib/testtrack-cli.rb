@@ -4,6 +4,8 @@ require 'yaml'
 
 module TestTrack
 	class CLIBase < Thor
+		include Thor::Actions
+
 		TESTTRACK_SETTINGS_FILE = ".testtrack_settings"
 
 		class_option :force_login, type: :boolean, aliases: '-l'
@@ -37,6 +39,10 @@ module TestTrack
 			puts "\n\n"
 		end
 
+		def save_settings
+			create_file TESTTRACK_SETTINGS_FILE, @settings.to_yaml
+		end
+
 	end
 
 	class Project < CLIBase
@@ -50,19 +56,33 @@ module TestTrack
 		end
 	end
 
-	class CLI < CLIBase
-		include Thor::Actions
+	class Settings < CLIBase
+
+		desc 'server', "Stores the server name and port so you don't have to enter them each time."
+		def server()
+			get_server_uri_from_prompt()
+			save_settings()
+		end
 
 		desc 'login', "Stores your TestTrack username/password so you don't have to enter them each time."
 		def login()
 			auth_from_prompt()
-
-			if yes?("[Auth] Do you want me to save your credentials?")
-				create_file TESTTRACK_SETTINGS_FILE, @settings.to_yaml
-			end
+			save_settings()
 		end
 
-		desc "project [SUBCOMMAND] [ARGS]", "tbd"
+		desc 'clear', "Clears all stored settings."
+		def clear()
+			@settings.clear
+			save_settings
+		end
+	end
+
+	class CLI < CLIBase
+		
+		desc 'settings [SUBCOMMAND] [ARGS]', "Manages gloabl settings."
+		subcommand 'settings', Settings
+
+		desc "project [SUBCOMMAND] [ARGS]", "Manages TestTrack projects."
 		subcommand 'project', Project
 	
 	end
