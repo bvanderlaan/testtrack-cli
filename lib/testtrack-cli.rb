@@ -57,7 +57,7 @@ module TestTrack
 				projects = api.list_projects(@settings[:username], @settings[:password])
 				say_status 'Ok', "Number of projects found: #{projects.count}", :green
 				puts projects
-			rescue InvalidURL, APIError => e
+			rescue InvalidURL, APIError, HTTPError => e
 				say_status 'ERROR', e.message, :red
 			end
 		end
@@ -93,10 +93,37 @@ module TestTrack
 			save_settings
 		end
 
-	private
+		private
 		def save_settings
 			create_file TESTTRACK_SETTINGS_FILE, @settings.to_yaml
 		end
+	end
+
+	class Defect < CLIBaseWithGlobalOptions
+		
+		desc 'list [PROJECT NAME][DEFECT ID]', 'List the information about the given defect.'
+		def list(project_name, defect_id = 0)
+			if defect_id.to_i <= 0
+				say_status 'ERROR', "The defect id was not provided", :red if defect_id.to_i == 0
+				say_status 'ERROR', "The defect id must been greater then zero", :red unless defect_id.to_i >= 0
+				return
+			end
+
+			auth()
+			server_uri = get_server_uri()
+
+			api = TestTrackApi.new( server_uri )
+			say_status 'Ok', "Querying server for list of defects, please stand by...", :green
+			begin
+				defects = api.list_defect(defect_id, project_name, @settings[:username], @settings[:password])
+				say_status 'Ok', "Defect found", :green
+				puts defects
+			rescue InvalidURL, APIError, HTTPError => e
+				say_status 'ERROR', e.message, :red
+			end
+		end	
+
+		map ls: :list	
 	end
 
 	class CLI < CLIBase
@@ -106,6 +133,9 @@ module TestTrack
 
 		desc "project [SUBCOMMAND] [ARGS]", "Manages TestTrack projects."
 		subcommand 'project', Project
+
+		desc "defect [SUBCOMMAND] [ARGS]", "Manages TestTrack defects."
+		subcommand 'defect', Defect
 	
 	end
 end
