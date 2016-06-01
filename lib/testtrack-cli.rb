@@ -6,6 +6,9 @@ module TestTrack
 	class CLIBase < Thor
 		TESTTRACK_SETTINGS_FILE = ".testtrack_settings"
 
+		class_option :force_login, type: :boolean, alias: '-l'
+		class_option :force_connection, type: :boolean, alias: '-c'
+
 		def initialize(*args)
 			super
 			@settings = Hash.new
@@ -28,11 +31,32 @@ module TestTrack
 
 		def auth_from_file()
 			@settings = YAML::load_file(TESTTRACK_SETTINGS_FILE) if !options[:force_login] && File.exists?(TESTTRACK_SETTINGS_FILE)
-			# data = open(TESTTRACK_SETTINGS_FILE).read if !options[:force_login] && File.exists?(TESTTRACK_SETTINGS_FILE)
-			# parts = data.split(' ')
-
 			raise ArgumentError unless @settings.has_key?(:username) and @settings.has_key?(:password)
 		end	
+
+		def get_server_uri
+			begin
+				uri = get_server_uri_from_file 
+			rescue ArgumentError
+				uri = get_server_uri_from_prompt
+			end
+
+			return uri
+		end
+
+		def get_server_uri_from_prompt
+			@settings[:servername] = ask("[Con] Server Name or IP: ")
+			@settings[:serverport] = ask("[Con] Server Port: ")
+			puts "\n\n"
+			return "#{@settings[:servername]}:#{@settings[:serverport]}"
+		end
+
+		def get_server_uri_from_file
+			@settings = YAML::load_file(TESTTRACK_SETTINGS_FILE) if !options[:force_connection] && File.exists?(TESTTRACK_SETTINGS_FILE)
+			raise ArgumentError unless @settings.has_key?(:servername) and @settings.has_key?(:serverport)
+			return "#{@settings[:servername]}:#{@settings[:serverport]}"
+		end
+
 	end
 
 	class Project < CLIBase
@@ -40,15 +64,14 @@ module TestTrack
 		desc 'list', 'List all projects you have access to.'
 		def list()
 			auth()
+			server_uri = get_server_uri()
 
-			puts "This has been a test..."
+			puts "This has been a test...#{server_uri}"
 		end
 	end
 
 	class CLI < CLIBase
 		include Thor::Actions
-
-		class_option :force_login, type: :boolean, alias: '-l'
 
 		desc 'login', "Stores your TestTrack username/password so you don't have to enter them each time."
 		def login()
