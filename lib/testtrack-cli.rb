@@ -15,7 +15,7 @@ module TestTrack
 			@settings = YAML::load_file(TESTTRACK_SETTINGS_FILE) if File.exists?(TESTTRACK_SETTINGS_FILE)
 		end
 
-	protected
+		protected
 		def auth()
 			auth_from_prompt unless !options[:force_login] and @settings.has_key?(:username) and @settings.has_key?(:password)
 		end
@@ -36,13 +36,14 @@ module TestTrack
 			@settings[:serverport] = ask("[Con] Server Port: ")
 			puts "\n\n"
 		end
-
 	end
 
-	class Project < CLIBase
-
+	class CLIBaseWithGlobalOptions < CLIBase
 		class_option :force_login, type: :boolean, aliases: '-l'
 		class_option :force_connection, type: :boolean, aliases: '-c'
+	end
+
+	class Project < CLIBaseWithGlobalOptions
 
 		desc 'list', 'List all projects you have access to.'
 		def list()
