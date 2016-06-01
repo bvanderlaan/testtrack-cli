@@ -7,4 +7,4 @@
 /pkg/
 /spec/reports/
 /tmp/
-*/.testtrack_auth
+*/.testtrack_settings

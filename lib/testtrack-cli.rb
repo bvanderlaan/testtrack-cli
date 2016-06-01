@@ -1,9 +1,15 @@
 require 'thor'
 require 'fileutils'
+require 'yaml'
 
 module TestTrack
 	class CLIBase < Thor
-		LOGIN_AUTH_FILE = ".testtrack_auth"
+		TESTTRACK_SETTINGS_FILE = ".testtrack_settings"
+
+		def initialize(*args)
+			super
+			@settings = Hash.new
+		end
 
 	protected
 		def auth()
@@ -15,19 +21,17 @@ module TestTrack
 		end
 
 		def auth_from_prompt()
-			@username = ask("[Auth] User name: " )
-			@password = ask("[Auth] Password: ", echo: false )
+			@settings[:username] = ask("[Auth] User name: " )
+			@settings[:password] = ask("[Auth] Password: ", echo: false )
 			puts "\n\n"
 		end
 
 		def auth_from_file()
-			data = open(LOGIN_AUTH_FILE).read if !options[:force_login] && File.exists?(LOGIN_AUTH_FILE)
-			parts = data.split(' ')
+			@settings = YAML::load_file(TESTTRACK_SETTINGS_FILE) if !options[:force_login] && File.exists?(TESTTRACK_SETTINGS_FILE)
+			# data = open(TESTTRACK_SETTINGS_FILE).read if !options[:force_login] && File.exists?(TESTTRACK_SETTINGS_FILE)
+			# parts = data.split(' ')
 
-			raise ArgumentError if parts.count != 2
-
-			@username = parts[0]
-			@password = parts[1]
+			raise ArgumentError unless @settings.has_key?(:username) and @settings.has_key?(:password)
 		end	
 	end
 
@@ -51,7 +55,7 @@ module TestTrack
 			auth_from_prompt()
 
 			if yes?("[Auth] Do you want me to save your credentials?")
-				create_file LOGIN_AUTH_FILE, "#{@username} #{@password}"
+				create_file TESTTRACK_SETTINGS_FILE, @settings.to_yaml
 			end
 		end
 
