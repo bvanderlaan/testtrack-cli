@@ -76,9 +76,17 @@ module TestTrack
 			save_settings()
 		end
 
-		desc 'clear', "Clears all stored settings."
+		desc 'clear', "Clears stored settings."
+		method_option :all, type: :boolean, aliases: '-a', desc: "Use this to clear all settings."
 		def clear()
-			@settings.clear
+			@settings.clear if options[:all]
+
+			@settings.each do |key, value|
+				if yes?("[Settings] Do you want me to clear the #{key} from the store?")
+					@settings.delete(key)
+				end
+			end
+
 			save_settings
 		end
 	end
