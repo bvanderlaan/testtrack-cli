@@ -1,6 +1,7 @@
 require 'thor'
 require 'fileutils'
 require 'yaml'
+require_relative 'testtrack-api'
 
 module TestTrack
 	class CLIBase < Thor
@@ -52,7 +53,10 @@ module TestTrack
 			auth()
 			server_uri = get_server_uri()
 
-			puts "This has been a test...#{server_uri}"
+			api = TestTrackApi.new(server_uri)
+
+			puts "Querying server for list of projects, please stand by..."
+			puts api.list_projects(@settings[:username], @settings[:password])
 		end
 	end
 
