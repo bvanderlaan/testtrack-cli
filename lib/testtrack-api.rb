@@ -22,7 +22,14 @@ module TestTrack
 				raise APIError, error.to_hash[:fault][:faultstring]
 			end
 
-  			return response.body			
+			projects = Array.new
+  			response.body[:get_project_list_response][:p_proj_list][:item].each do |item|
+  				item.each do |key, value|
+  					projects.push( value[:name] ) if key == :database
+  				end
+  			end
+
+  			return projects
   		end
 	end
 end
