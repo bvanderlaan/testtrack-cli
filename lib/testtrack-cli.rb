@@ -9,9 +9,6 @@ module TestTrack
 
 		TESTTRACK_SETTINGS_FILE = ".testtrack_settings"
 
-		class_option :force_login, type: :boolean, aliases: '-l'
-		class_option :force_connection, type: :boolean, aliases: '-c'
-
 		def initialize(*args)
 			super
 			@settings = Hash.new
@@ -47,6 +44,9 @@ module TestTrack
 	end
 
 	class Project < CLIBase
+
+		class_option :force_login, type: :boolean, aliases: '-l'
+		class_option :force_connection, type: :boolean, aliases: '-c'
 
 		desc 'list', 'List all projects you have access to.'
 		def list()
