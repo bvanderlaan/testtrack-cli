@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require File.expand_path('../../lib/testtrack-cli', __FILE__)
+require_relative "../lib/testtrack-cli"
 
 TestTrack::CLI.start
