@@ -37,10 +37,6 @@ module TestTrack
 			puts "\n\n"
 		end
 
-		def save_settings
-			create_file TESTTRACK_SETTINGS_FILE, @settings.to_yaml
-		end
-
 	end
 
 	class Project < CLIBase
@@ -94,6 +90,11 @@ module TestTrack
 			end
 
 			save_settings
+		end
+
+	private
+		def save_settings
+			create_file TESTTRACK_SETTINGS_FILE, @settings.to_yaml
 		end
 	end
 
