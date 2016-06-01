@@ -6,8 +6,8 @@ module TestTrack
 	class CLIBase < Thor
 		TESTTRACK_SETTINGS_FILE = ".testtrack_settings"
 
-		class_option :force_login, type: :boolean, alias: '-l'
-		class_option :force_connection, type: :boolean, alias: '-c'
+		class_option :force_login, type: :boolean, aliases: '-l'
+		class_option :force_connection, type: :boolean, aliases: '-c'
 
 		def initialize(*args)
 			super
