@@ -55,8 +55,12 @@ module TestTrack
 
 			api = TestTrackApi.new(server_uri)
 
-			puts "Querying server for list of projects, please stand by..."
-			puts api.list_projects(@settings[:username], @settings[:password])
+			say_status 'Ok', "Querying server for list of projects, please stand by...", :green
+			begin
+				puts api.list_projects(@settings[:username], @settings[:password])
+			rescue InvalidURL, APIError => e
+				say_status 'ERROR', e.message, :red
+			end
 		end
 
 		map ls: :list
