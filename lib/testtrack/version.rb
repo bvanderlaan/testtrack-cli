@@ -1,3 +1,3 @@
-module Testtrack
+module TestTrack
   VERSION = "0.1.0"
 end
