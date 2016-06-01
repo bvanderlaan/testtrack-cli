@@ -58,6 +58,8 @@ module TestTrack
 			puts "Querying server for list of projects, please stand by..."
 			puts api.list_projects(@settings[:username], @settings[:password])
 		end
+
+		map ls: :list
 	end
 
 	class Settings < CLIBase
