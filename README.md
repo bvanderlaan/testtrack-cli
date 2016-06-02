@@ -20,17 +20,17 @@ Or install it yourself as:
 
 ## Usage
 
-TestTrack is a commandline tool. To use it open a termainl and type:
-'''
+TestTrack is a command line tool. To use it open a terminal and type:
+```
 $ testtrack
-'''
+```
 
 You will get help prompts explaining what commands are available.
 
 You can get detailed help text about each command by using the help command.
-'''
+```
 $ testtrack help defect
-'''
+```
 
 ## Development
 
@@ -46,4 +46,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
