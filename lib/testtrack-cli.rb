@@ -1,6 +1,7 @@
 require 'thor'
 require 'fileutils'
 require 'yaml'
+require 'json'
 require_relative 'testtrack-api'
 require_relative "testtrack/hash"
 
@@ -104,6 +105,8 @@ module TestTrack
 		class Defect < CLIBaseWithGlobalOptions
 			
 			desc 'list [PROJECT NAME][DEFECT ID]', 'List the information about the given defect.'
+			method_option :json, type: :boolean, aliases: '-j', desc: 'Display the defect information as a json string.'
+			method_option :yaml, type: :boolean, aliases: '-y', desc: 'Display the defect information as a yaml string.'
 			def list(project_name, defect_id = 0)
 				if defect_id.to_i <= 0
 					say_status 'ERROR', "The defect id was not provided", :red if defect_id.to_i == 0
@@ -124,20 +127,26 @@ module TestTrack
 
 				say_status 'Ok', "Defect found", :green
 
-				date_time_format = "%a %B %d %Y, %I:%M:%S %p %Z"
-				puts
-				puts "Defect Id:\t #{defect.recordid}"
-				puts "Created:\t #{defect.datetimecreated.strftime(date_time_format)}"
-				puts "Last Modified:\t #{defect.datetimemodified.strftime(date_time_format)}"
-				puts "State:\t\t #{defect.state}"
-				puts "Severity:\t #{defect.severity}"
-				puts "Type:\t\t #{defect.type}"
-				puts "Product:\t #{defect.product}"
-				puts "Component:\t #{defect.component}"
-				puts "Found by:\t #{defect.enteredby}"
-				puts
-				puts "\t#{defect.summary}"
-				puts
+				if options[:json]
+					puts defect.to_json
+				elsif options[:yaml]
+					puts defect.to_yaml
+				else
+					date_time_format = "%a %B %d %Y, %I:%M:%S %p %Z"
+					puts
+					puts "Defect Id:\t #{defect.recordid}"
+					puts "Created:\t #{defect.datetimecreated.strftime(date_time_format)}"
+					puts "Last Modified:\t #{defect.datetimemodified.strftime(date_time_format)}"
+					puts "State:\t\t #{defect.state}"
+					puts "Severity:\t #{defect.severity}"
+					puts "Type:\t\t #{defect.type}"
+					puts "Product:\t #{defect.product}"
+					puts "Component:\t #{defect.component}"
+					puts "Found by:\t #{defect.enteredby}"
+					puts
+					puts "\t#{defect.summary}"
+					puts
+				end
 			end	
 
 			map ls: :list	
