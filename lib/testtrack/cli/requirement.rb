@@ -9,6 +9,30 @@ module TestTrack
 		class Requirement < CLIBaseWithGlobalOptions
 			
 			desc 'list [PROJECT NAME][REQUIREMENT ID]', 'List the information about the given requirement.'
+			long_desc <<-LONGDESC
+				List the information about the given requirement. The information will be printed to the terminal in a human friendly format.
+
+				With the --json flag the information will be printed to the terminal as a JSON string. The --json flag has a short form that can be used: '-j' or '-J'
+
+				With the --yaml flag the information will be printed to the terminal as a YAML stirng. The --yaml flag has a short form that can be used: '-y' or '-Y'
+
+				Example:
+					\x5\t> testtrack requirement list MyProject 42
+					\x5\t> testtrack requirement list MyProject 42 -j
+					\x5\t> testtrack requriement list MyProject 42 -Y
+
+
+				You can also use the short form of the root command:
+					\x5\t> testtrack r list MyProject 42
+					\x5\t> testtrack r list MyProject 42 -j
+					\x5\t> testtrack r list MyProject 42 -Y
+
+
+				The list sub command also provides a short form:
+					\x5\t> testtrack requirement ls MyProject 42 -J
+					\x5\t> testtrack r ls MyProject 42
+
+			LONGDESC
 			method_option :json, type: :boolean, aliases: ['-j', '-J' ], desc: 'Display the requirement information as a json string.'
 			method_option :yaml, type: :boolean, aliases: ['-y', '-Y'], desc: 'Display the requirement information as a yaml string.'
 			def list(project_name, requirement_id = 0)

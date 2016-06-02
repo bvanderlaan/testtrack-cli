@@ -8,6 +8,21 @@ module TestTrack
 		class Project < CLIBaseWithGlobalOptions
 
 			desc 'list', 'List all projects you have access to.'
+			long_desc <<-LONGDESC
+				List all projects you have access to.
+
+				Example:
+					\x5\t> testtrack project list
+					
+
+				You can also use the short form of the root command:
+					\x5\t> testtrack p list
+					
+
+				The list sub command also provides a short form:
+					\x5\t> testtrack p ls
+
+			LONGDESC
 			def list()
 				auth()
 				server_uri = get_server_uri()
