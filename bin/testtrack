@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require_relative "../lib/testtrack-cli"
+require_relative "../lib/testtrack"
 
 TestTrack::CLI::CLI.start
