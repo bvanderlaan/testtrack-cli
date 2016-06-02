@@ -27,13 +27,13 @@ module TestTrack
 					defect = TestTrack::Defect.new( api.list_defect(defect_id, project_name, @settings[:username], @settings[:password]) )
 				rescue InvalidURL, APIError, HTTPError => e
 					say_status 'ERROR', e.message, :red
+				else
+					say_status 'Ok', "Defect found", :green
+
+					puts defect.to_json if options[:json]
+					puts defect.to_yaml if options[:yaml]
+					puts defect.to_s unless options[:json] or options[:yaml]
 				end
-
-				say_status 'Ok', "Defect found", :green
-
-				puts defect.to_json if options[:json]
-				puts defect.to_yaml if options[:yaml]
-				puts defect.to_s unless options[:json] or options[:yaml]
 			end	
 
 			map ls: :list	

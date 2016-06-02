@@ -17,10 +17,11 @@ module TestTrack
 				say_status 'Ok', "Querying server for list of projects, please stand by...", :green
 				begin
 					projects = api.list_projects(@settings[:username], @settings[:password])
-					say_status 'Ok', "Number of projects found: #{projects.count}", :green
-					puts projects
 				rescue InvalidURL, APIError, HTTPError => e
 					say_status 'ERROR', e.message, :red
+				else
+					say_status 'Ok', "Number of projects found: #{projects.count}", :green
+					puts projects
 				end
 			end
 
