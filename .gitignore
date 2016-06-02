@@ -8,3 +8,4 @@
 /spec/reports/
 /tmp/
 */.testtrack_settings
+*.log
