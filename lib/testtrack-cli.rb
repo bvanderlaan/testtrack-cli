@@ -1,9 +1,8 @@
 require 'thor'
 require 'fileutils'
 require 'yaml'
-require 'json'
 require_relative 'testtrack-api'
-require_relative "testtrack/hash"
+require_relative "testtrack/defect"
 
 module TestTrack
 	module CLI
@@ -120,34 +119,16 @@ module TestTrack
 				api = TestTrackApi.new( server_uri )
 				say_status 'Ok', "Querying server for list of defects, please stand by...", :green
 				begin
-					defect = api.list_defect(defect_id, project_name, @settings[:username], @settings[:password])
+					defect = TestTrack::Defect.new( api.list_defect(defect_id, project_name, @settings[:username], @settings[:password]) )
 				rescue InvalidURL, APIError, HTTPError => e
 					say_status 'ERROR', e.message, :red
 				end
 
 				say_status 'Ok', "Defect found", :green
 
-				if options[:json]
-					puts defect.to_json
-				elsif options[:yaml]
-					puts defect.to_yaml
-				else
-					date_time_format = "%a %B %d %Y, %I:%M:%S %p %Z"
-					puts
-					puts "Defect Id:\t #{defect.recordid}"
-					puts "Created:\t #{defect.datetimecreated.strftime(date_time_format)}"
-					puts "Last Modified:\t #{defect.datetimemodified.strftime(date_time_format)}"
-					puts "State:\t\t #{defect.state}"
-					puts "Priority:\t #{defect.priority}"
-					puts "Severity:\t #{defect.severity}"
-					puts "Type:\t\t #{defect.type}"
-					puts "Product:\t #{defect.product}"
-					puts "Component:\t #{defect.component}"
-					puts "Found by:\t #{defect.enteredby}"
-					puts
-					puts "\t#{defect.summary}"
-					puts
-				end
+				puts defect.to_json if options[:json]
+				puts defect.to_yaml if options[:yaml]
+				puts defect.to_s unless options[:json] or options[:yaml]
 			end	
 
 			map ls: :list	
