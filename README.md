@@ -1,6 +1,6 @@
 # Testtrack
 
-TestTrack is a command line tool for interfacing with Seapine Software's TestTrack Application Life Management tool.
+TestTrack is a command line tool for interfacing with [Seapine Software's TestTrack Application Life Management](http://www.seapine.com/testtrack/overview) tool.
 
 ## Installation
 
