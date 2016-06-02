@@ -38,8 +38,8 @@ module TestTrack
 		end
 
 		class CLIBaseWithGlobalOptions < CLIBase
-			class_option :force_login, type: :boolean, aliases: ['-l', '-L']
-			class_option :force_connection, type: :boolean, aliases: ['-c', '-C']
+			class_option :force_login, type: :boolean, aliases: ['-l', '-L'], desc: "Force the user to input their user name and password."
+			class_option :force_connection, type: :boolean, aliases: ['-c', '-C'], desc: "Force the user to input the server name or IP address and port number."
 		end
 	end
 end
