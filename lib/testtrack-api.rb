@@ -38,6 +38,18 @@ module TestTrack
 			return response.body[:get_defect_by_record_id_response][:p_defect]
   		end
 
+  		def list_requirement(requirement_id, project_name, username, password)
+  			login(project_name, username, password)
+
+  			begin
+  				response = invoke_api_method( :get_requirement_by_record_id, { cookie: @cookie, recordID: requirement_id } )
+  			ensure 
+  				logoff()
+  			end
+
+			return response.body[:get_requirement_by_record_id_response][:p_requirement]
+  		end
+
   	private
 
   		def login(project_name, username, password)
