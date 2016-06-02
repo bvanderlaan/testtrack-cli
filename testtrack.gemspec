@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Brad van der Laan"]
   spec.email         = ["brad.vanderlaan@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = spec.description
+  spec.description   = "testtrack is a command line tool for interfacing with Seapine Software's TestTrack Application Life Management tool."
+  spec.homepage      = "https://github.com/bvanderlaan/testtrack-cli"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
