@@ -9,8 +9,8 @@ module TestTrack
 		class Defect < CLIBaseWithGlobalOptions
 			
 			desc 'list [PROJECT NAME][DEFECT ID]', 'List the information about the given defect.'
-			method_option :json, type: :boolean, aliases: '-j', desc: 'Display the defect information as a json string.'
-			method_option :yaml, type: :boolean, aliases: '-y', desc: 'Display the defect information as a yaml string.'
+			method_option :json, type: :boolean, aliases: ['-j', '-J' ], desc: 'Display the defect information as a json string.'
+			method_option :yaml, type: :boolean, aliases: ['-y', '-Y'], desc: 'Display the defect information as a yaml string.'
 			def list(project_name, defect_id = 0)
 				if defect_id.to_i <= 0
 					say_status 'ERROR', "The defect id was not provided", :red if defect_id.to_i == 0

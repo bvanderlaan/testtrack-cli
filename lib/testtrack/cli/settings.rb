@@ -21,7 +21,7 @@ module TestTrack
 			end
 
 			desc 'clear', "Clears stored settings."
-			method_option :all, type: :boolean, aliases: '-a', desc: "Use this to clear all settings."
+			method_option :all, type: :boolean, aliases: ['-a','-A'], desc: "Use this to clear all settings."
 			def clear()
 				@settings.clear if options[:all]
 

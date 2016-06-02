@@ -38,8 +38,8 @@ module TestTrack
 		end
 
 		class CLIBaseWithGlobalOptions < CLIBase
-			class_option :force_login, type: :boolean, aliases: '-l'
-			class_option :force_connection, type: :boolean, aliases: '-c'
+			class_option :force_login, type: :boolean, aliases: ['-l', '-L']
+			class_option :force_connection, type: :boolean, aliases: ['-c', '-C']
 		end
 	end
 end
