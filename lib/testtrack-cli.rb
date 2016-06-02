@@ -138,6 +138,7 @@ module TestTrack
 					puts "Created:\t #{defect.datetimecreated.strftime(date_time_format)}"
 					puts "Last Modified:\t #{defect.datetimemodified.strftime(date_time_format)}"
 					puts "State:\t\t #{defect.state}"
+					puts "Priority:\t #{defect.priority}"
 					puts "Severity:\t #{defect.severity}"
 					puts "Type:\t\t #{defect.type}"
 					puts "Product:\t #{defect.product}"
