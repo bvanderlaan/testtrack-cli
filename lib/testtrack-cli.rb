@@ -4,7 +4,7 @@ require_relative 'testtrack/cli/settings'
 require_relative 'testtrack/cli/project'
 require_relative 'testtrack/cli/defect'
 require_relative 'testtrack/cli/requirement'
-require_relative 'testtrack-api'
+require_relative 'testtrack/testtrack-api'
 
 module TestTrack
 	module CLI

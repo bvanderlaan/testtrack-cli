@@ -1,5 +1,5 @@
-require_relative "testtrack/version"
-require_relative "testtrack/exceptions"
+require_relative "version"
+require_relative "exceptions"
 require 'savon'
 
 module TestTrack

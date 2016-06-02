@@ -1,6 +1,6 @@
 require 'thor'
 require_relative 'clibase'
-require_relative '../../testtrack-api'
+require_relative '../testtrack-api'
 require_relative "../requirement"
 
 module TestTrack
