@@ -2,6 +2,7 @@ require 'thor'
 require 'fileutils'
 require 'yaml'
 require_relative 'testtrack-api'
+require_relative "testtrack/hash"
 
 module TestTrack
 	module CLI
@@ -116,12 +117,27 @@ module TestTrack
 				api = TestTrackApi.new( server_uri )
 				say_status 'Ok', "Querying server for list of defects, please stand by...", :green
 				begin
-					defects = api.list_defect(defect_id, project_name, @settings[:username], @settings[:password])
-					say_status 'Ok', "Defect found", :green
-					puts defects
+					defect = api.list_defect(defect_id, project_name, @settings[:username], @settings[:password])
 				rescue InvalidURL, APIError, HTTPError => e
 					say_status 'ERROR', e.message, :red
 				end
+
+				say_status 'Ok', "Defect found", :green
+
+				date_time_format = "%a %B %d %Y, %I:%M:%S %p %Z"
+				puts
+				puts "Defect Id:\t #{defect.recordid}"
+				puts "Created:\t #{defect.datetimecreated.strftime(date_time_format)}"
+				puts "Last Modified:\t #{defect.datetimemodified.strftime(date_time_format)}"
+				puts "State:\t\t #{defect.state}"
+				puts "Severity:\t #{defect.severity}"
+				puts "Type:\t\t #{defect.type}"
+				puts "Product:\t #{defect.product}"
+				puts "Component:\t #{defect.component}"
+				puts "Found by:\t #{defect.enteredby}"
+				puts
+				puts "\t#{defect.summary}"
+				puts
 			end	
 
 			map ls: :list	

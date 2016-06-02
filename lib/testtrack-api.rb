@@ -35,7 +35,7 @@ module TestTrack
   				logoff()
   			end
 
-			return response.body
+			return response.body[:get_defect_by_record_id_response][:p_defect]
   		end
 
   	private
